@@ -8,8 +8,10 @@ import { ListTable } from "../components/ListTable";
 import { cakeListSetting } from "../const/cakeListSetting";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { materialListSetting } from "../const/materialListSetting";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { setCakeList } from "../reducer/cakeListReducer";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -47,6 +49,18 @@ export const TopPage = () => {
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
+  const dispatch = useAppDispatch();
+  const cakeList = useAppSelector((state) => state.cakeList.cakeList);
+  const sales = useAppSelector((state) => state.cakeList.sales);
+
+  const setCakeListInitialize = useCallback(() => {
+    dispatch(setCakeList());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setCakeListInitialize();
+  }, []);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => [
     setValue((prev) => newValue),
   ];
@@ -64,6 +78,9 @@ export const TopPage = () => {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Typography variant="h3" color="secondary">
+        現在の売上:{sales}円
+      </Typography>
       <AppBar position="static" color="default">
         <Tabs
           value={value}
@@ -84,7 +101,7 @@ export const TopPage = () => {
       >
         <TabPanel value={value} index={0} dir={theme.direction}>
           <ListTable
-            itemData={cakeListSetting.initialList}
+            itemData={cakeList}
             tableSetting={cakeListSetting.tableSettin}
           ></ListTable>
         </TabPanel>
