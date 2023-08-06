@@ -9,21 +9,18 @@ import {
 
 import { materialInfo, materialTableInfo } from "../const/materialListSetting";
 import { cakeInfo, cakeTableInfo } from "../const/cakeListSetting";
-import { useAppDispatch } from "../app/hooks";
-import { sellCake } from "../reducer/cakeListReducer";
 
 type Props = {
   tableSetting: materialTableInfo[] | cakeTableInfo[];
   itemData: materialInfo[] | cakeInfo[];
+  selHandler: (index: number) => void;
 };
 
-export const ListTable = ({ tableSetting: table, itemData: data }: Props) => {
-  const dispatch = useAppDispatch();
-  const handleClick = (idx: number) => {
-    console.log(idx);
-    dispatch(sellCake(idx));
-  };
-
+export const ListTable = ({
+  tableSetting: table,
+  itemData: data,
+  selHandler,
+}: Props) => {
   return (
     <Table>
       <TableHead>
@@ -47,7 +44,8 @@ export const ListTable = ({ tableSetting: table, itemData: data }: Props) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => handleClick(itemIdx)}
+                    onClick={() => selHandler(itemIdx)}
+                    disabled={item.stock === 0}
                   >
                     1つ売る
                   </Button>

@@ -12,6 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import { materialListSetting } from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCakeList } from "../reducer/cakeListReducer";
+import { sellCake } from "../reducer/cakeListReducer";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -56,6 +57,11 @@ export const TopPage = () => {
   const setCakeListInitialize = useCallback(() => {
     dispatch(setCakeList());
   }, [dispatch]);
+
+  const selHandler = (idx: number) => {
+    console.log(idx);
+    dispatch(sellCake(idx));
+  };
 
   useEffect(() => {
     setCakeListInitialize();
@@ -103,12 +109,14 @@ export const TopPage = () => {
           <ListTable
             itemData={cakeList}
             tableSetting={cakeListSetting.tableSettin}
+            selHandler={selHandler}
           ></ListTable>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <ListTable
             itemData={materialListSetting.initialList}
             tableSetting={materialListSetting.tableSettin}
+            selHandler={selHandler}
           ></ListTable>
         </TabPanel>
       </SwipeableViews>

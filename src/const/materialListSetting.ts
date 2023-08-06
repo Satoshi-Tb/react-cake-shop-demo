@@ -21,7 +21,7 @@ export const materialListSetting = {
   ] as materialInfo[],
   tableSettin: [
     { label: "なまえ", data: "name" },
-    { label: "値段", data: "name" },
+    { label: "値段", data: "price" },
     { label: "在庫数", data: "stock" },
     { label: "在庫を増やす", data: "refill" },
   ] as materialTableInfo[],
