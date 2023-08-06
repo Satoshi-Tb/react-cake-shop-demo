@@ -20,9 +20,13 @@ import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
 import { materialListSetting } from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setCakeList } from "../reducer/cakeListReducer";
+import { makeCake, setCakeList } from "../reducer/cakeListReducer";
 import { sellCake } from "../reducer/cakeListReducer";
-import { setMaterialList, supply } from "../reducer/materialListReducer";
+import {
+  consumeMaterial,
+  setMaterialList,
+  supply,
+} from "../reducer/materialListReducer";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -83,7 +87,12 @@ export const TopPage = () => {
     setOpenSnackbar(true);
   };
 
-  const supplyHandler = (idx: number) => {
+  const cakeSupplyHandler = (idx: number) => {
+    dispatch(makeCake(idx));
+    dispatch(consumeMaterial(idx));
+  };
+
+  const materialSupplyHandler = (idx: number) => {
     dispatch(supply(idx));
   };
 
@@ -146,7 +155,7 @@ export const TopPage = () => {
             itemData={cakeList}
             tableSetting={cakeListSetting.tableSettin}
             selHandler={selHandler}
-            supplyHandler={() => null}
+            supplyHandler={cakeSupplyHandler}
             funds={funds}
           ></ListTable>
         </TabPanel>
@@ -154,8 +163,8 @@ export const TopPage = () => {
           <ListTable
             itemData={materialList}
             tableSetting={materialListSetting.tableSettin}
-            selHandler={() => null}
-            supplyHandler={supplyHandler}
+            selHandler={() => {}}
+            supplyHandler={materialSupplyHandler}
             funds={funds}
           ></ListTable>
         </TabPanel>

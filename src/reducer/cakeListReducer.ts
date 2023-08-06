@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { cakeInfo, cakeListSetting } from "../const/cakeListSetting";
-import { act } from "@testing-library/react";
 
 type CakeState = {
   cakeList: cakeInfo[];
@@ -24,17 +23,12 @@ export const cakeList = createSlice({
       cake.stock--;
     },
     makeCake: (state, action) => {
-      const target = action.payload as number;
-      switch (target) {
-        case 0: // ショートケーキ
-          break;
-        default:
-          break;
-      }
+      const index = action.payload as number;
+      state.cakeList[index].stock++;
     },
   },
 });
 
-export const { setCakeList, sellCake } = cakeList.actions;
+export const { setCakeList, sellCake, makeCake } = cakeList.actions;
 
 export default cakeList.reducer;
