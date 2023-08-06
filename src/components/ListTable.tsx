@@ -17,7 +17,7 @@ type Props = {
   supplyHandler:
     | ((index: number) => void)
     | ((index: number, price: number) => void);
-  funds: number;
+  canSupply: (index: number) => boolean;
 };
 
 export const ListTable = ({
@@ -25,7 +25,7 @@ export const ListTable = ({
   itemData: data,
   selHandler,
   supplyHandler,
-  funds,
+  canSupply,
 }: Props) => {
   return (
     <Table>
@@ -37,7 +37,7 @@ export const ListTable = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.map((item, itemIdx) => (
+        {data.map((item, row) => (
           <TableRow key={item.name}>
             {table.map((col, idx) =>
               col.data === "sell" ? (
@@ -50,7 +50,7 @@ export const ListTable = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => selHandler(itemIdx)}
+                    onClick={() => selHandler(row)}
                     disabled={item.stock === 0}
                   >
                     1つ売る
@@ -66,8 +66,8 @@ export const ListTable = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => supplyHandler(itemIdx, item.price)}
-                    disabled={funds < item.price}
+                    onClick={() => supplyHandler(row, item.price)}
+                    disabled={!canSupply(row)}
                   >
                     1つ補充する
                   </Button>

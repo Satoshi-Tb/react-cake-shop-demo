@@ -18,7 +18,10 @@ import { ListTable } from "../components/ListTable";
 import { cakeListSetting } from "../const/cakeListSetting";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import { materialListSetting } from "../const/materialListSetting";
+import {
+  materialInfo,
+  materialListSetting,
+} from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   makeCake,
@@ -96,9 +99,56 @@ export const TopPage = () => {
     dispatch(consumeMaterial(idx));
   };
 
+  const canCakeSupply = (idx: number) => {
+    switch (idx) {
+      case 0: // ショートケーキ
+        return (
+          materialList[0].stock >= 1 &&
+          materialList[1].stock >= 1 &&
+          materialList[2].stock >= 1
+        );
+
+      case 1: // チーズケーキ
+        return (
+          materialList[0].stock >= 1 &&
+          materialList[1].stock >= 2 &&
+          materialList[2].stock >= 1
+        );
+
+      case 2: // シュークリーム
+        return (
+          materialList[0].stock >= 1 &&
+          materialList[1].stock >= 2 &&
+          materialList[2].stock >= 1
+        );
+
+      case 3: // ロールケーキ
+        return (
+          materialList[0].stock >= 2 &&
+          materialList[2].stock >= 1 &&
+          materialList[3].stock >= 2
+        );
+
+      case 4: //
+        return (
+          materialList[0].stock >= 2 &&
+          materialList[1].stock >= 1 &&
+          materialList[2].stock >= 2 &&
+          materialList[3].stock >= 1
+        );
+
+      default:
+        return false;
+    }
+  };
+
   const materialSupplyHandler = (idx: number, price: number) => {
     dispatch(supplyMaterial(idx));
     dispatch(paymentMaterial(price));
+  };
+
+  const canMaterialSupply = (idx: number) => {
+    return funds >= materialList[idx].price;
   };
 
   const handleSnackClose = (
@@ -161,7 +211,7 @@ export const TopPage = () => {
             tableSetting={cakeListSetting.tableSettin}
             selHandler={selHandler}
             supplyHandler={cakeSupplyHandler}
-            funds={funds}
+            canSupply={canCakeSupply}
           ></ListTable>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
@@ -170,7 +220,7 @@ export const TopPage = () => {
             tableSetting={materialListSetting.tableSettin}
             selHandler={() => {}}
             supplyHandler={materialSupplyHandler}
-            funds={funds}
+            canSupply={canMaterialSupply}
           ></ListTable>
         </TabPanel>
       </SwipeableViews>
