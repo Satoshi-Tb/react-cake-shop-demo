@@ -26,9 +26,14 @@ export const cakeList = createSlice({
       const index = action.payload as number;
       state.cakeList[index].stock++;
     },
+    paymentMaterial: (state, action) => {
+      const price = action.payload as number;
+      state.funds -= price;
+    },
   },
 });
 
-export const { setCakeList, sellCake, makeCake } = cakeList.actions;
+export const { setCakeList, sellCake, makeCake, paymentMaterial } =
+  cakeList.actions;
 
 export default cakeList.reducer;

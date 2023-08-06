@@ -20,12 +20,16 @@ import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
 import { materialListSetting } from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { makeCake, setCakeList } from "../reducer/cakeListReducer";
+import {
+  makeCake,
+  paymentMaterial,
+  setCakeList,
+} from "../reducer/cakeListReducer";
 import { sellCake } from "../reducer/cakeListReducer";
 import {
   consumeMaterial,
   setMaterialList,
-  supply,
+  supplyMaterial,
 } from "../reducer/materialListReducer";
 
 type TabPanelProps = {
@@ -92,8 +96,9 @@ export const TopPage = () => {
     dispatch(consumeMaterial(idx));
   };
 
-  const materialSupplyHandler = (idx: number) => {
-    dispatch(supply(idx));
+  const materialSupplyHandler = (idx: number, price: number) => {
+    dispatch(supplyMaterial(idx));
+    dispatch(paymentMaterial(price));
   };
 
   const handleSnackClose = (

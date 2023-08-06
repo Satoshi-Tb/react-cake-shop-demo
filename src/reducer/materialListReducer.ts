@@ -17,7 +17,7 @@ export const materialList = createSlice({
     setMaterialList: (state) => {
       state.materialList = materialListSetting.initialList;
     },
-    supply: (state, action) => {
+    supplyMaterial: (state, action) => {
       const index = action.payload as number;
       const material = state.materialList[index];
       material.stock++;
@@ -65,7 +65,7 @@ export const materialList = createSlice({
   },
 });
 
-export const { setMaterialList, supply, consumeMaterial } =
+export const { setMaterialList, supplyMaterial, consumeMaterial } =
   materialList.actions;
 
 export default materialList.reducer;

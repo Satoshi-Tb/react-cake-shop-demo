@@ -14,7 +14,9 @@ type Props = {
   tableSetting: materialTableInfo[] | cakeTableInfo[];
   itemData: materialInfo[] | cakeInfo[];
   selHandler: (index: number) => void;
-  supplyHandler: (index: number) => void;
+  supplyHandler:
+    | ((index: number) => void)
+    | ((index: number, price: number) => void);
   funds: number;
 };
 
@@ -64,7 +66,7 @@ export const ListTable = ({
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => supplyHandler(itemIdx)}
+                    onClick={() => supplyHandler(itemIdx, item.price)}
                     disabled={funds < item.price}
                   >
                     1つ補充する
