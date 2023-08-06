@@ -14,12 +14,16 @@ type Props = {
   tableSetting: materialTableInfo[] | cakeTableInfo[];
   itemData: materialInfo[] | cakeInfo[];
   selHandler: (index: number) => void;
+  supplyHandler: (index: number) => void;
+  funds: number;
 };
 
 export const ListTable = ({
   tableSetting: table,
   itemData: data,
   selHandler,
+  supplyHandler,
+  funds,
 }: Props) => {
   return (
     <Table>
@@ -57,7 +61,12 @@ export const ListTable = ({
                   scope="row"
                   key={col.label}
                 >
-                  <Button variant="contained" color="primary">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => supplyHandler(itemIdx)}
+                    disabled={funds < item.price}
+                  >
                     1つ補充する
                   </Button>
                 </TableCell>

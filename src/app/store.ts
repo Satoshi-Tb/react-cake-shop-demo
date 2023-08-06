@@ -1,8 +1,9 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import cakeListReducer from "../reducer/cakeListReducer";
+import materialListReducer from "../reducer/materialListReducer";
 
 export const store = configureStore({
-  reducer: { cakeList: cakeListReducer },
+  reducer: { cakeList: cakeListReducer, materialList: materialListReducer },
 });
 
 export type AppDispatch = typeof store.dispatch;

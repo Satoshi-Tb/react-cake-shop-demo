@@ -22,6 +22,7 @@ import { materialListSetting } from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCakeList } from "../reducer/cakeListReducer";
 import { sellCake } from "../reducer/cakeListReducer";
+import { setMaterialList, supply } from "../reducer/materialListReducer";
 
 type TabPanelProps = {
   children?: React.ReactNode;
@@ -63,16 +64,27 @@ export const TopPage = () => {
 
   const dispatch = useAppDispatch();
   const cakeList = useAppSelector((state) => state.cakeList.cakeList);
-  const sales = useAppSelector((state) => state.cakeList.sales);
+  const funds = useAppSelector((state) => state.cakeList.funds);
+  const materialList = useAppSelector(
+    (state) => state.materialList.materialList
+  );
 
   const setCakeListInitialize = useCallback(() => {
     dispatch(setCakeList());
+  }, [dispatch]);
+
+  const setMaterialListInitialize = useCallback(() => {
+    dispatch(setMaterialList());
   }, [dispatch]);
 
   const selHandler = (idx: number) => {
     console.log(idx);
     dispatch(sellCake(idx));
     setOpenSnackbar(true);
+  };
+
+  const supplyHandler = (idx: number) => {
+    dispatch(supply(idx));
   };
 
   const handleSnackClose = (
@@ -88,6 +100,7 @@ export const TopPage = () => {
 
   useEffect(() => {
     setCakeListInitialize();
+    setMaterialListInitialize();
   }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => [
@@ -108,7 +121,7 @@ export const TopPage = () => {
         </Toolbar>
       </AppBar>
       <Typography variant="h3" color="secondary">
-        現在の売上:{sales}円
+        現在の資金:{funds}円
       </Typography>
       <AppBar position="static" color="default">
         <Tabs
@@ -133,13 +146,17 @@ export const TopPage = () => {
             itemData={cakeList}
             tableSetting={cakeListSetting.tableSettin}
             selHandler={selHandler}
+            supplyHandler={() => null}
+            funds={funds}
           ></ListTable>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
           <ListTable
-            itemData={materialListSetting.initialList}
+            itemData={materialList}
             tableSetting={materialListSetting.tableSettin}
-            selHandler={selHandler}
+            selHandler={() => null}
+            supplyHandler={supplyHandler}
+            funds={funds}
           ></ListTable>
         </TabPanel>
       </SwipeableViews>
