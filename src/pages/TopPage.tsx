@@ -1,4 +1,14 @@
-import { AppBar, ThemeProvider, Tabs, Tab, Box } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import {
+  AppBar,
+  ThemeProvider,
+  Tabs,
+  Tab,
+  Box,
+  Snackbar,
+  Button,
+  Alert,
+} from "@mui/material";
 import CakeIcon from "@mui/icons-material/Cake";
 import KitchenIcon from "@mui/icons-material/Kitchen";
 import Toolbar from "@mui/material/Toolbar/Toolbar";
@@ -8,7 +18,6 @@ import { ListTable } from "../components/ListTable";
 import { cakeListSetting } from "../const/cakeListSetting";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import { useCallback, useEffect, useState } from "react";
 import { materialListSetting } from "../const/materialListSetting";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCakeList } from "../reducer/cakeListReducer";
@@ -50,6 +59,8 @@ export const TopPage = () => {
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const dispatch = useAppDispatch();
   const cakeList = useAppSelector((state) => state.cakeList.cakeList);
   const sales = useAppSelector((state) => state.cakeList.sales);
@@ -61,6 +72,18 @@ export const TopPage = () => {
   const selHandler = (idx: number) => {
     console.log(idx);
     dispatch(sellCake(idx));
+    setOpenSnackbar(true);
+  };
+
+  const handleSnackClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    //if (reason === "clickaway") {
+    //  return;
+    //}
+
+    setOpenSnackbar(false);
   };
 
   useEffect(() => {
@@ -120,6 +143,17 @@ export const TopPage = () => {
           ></ListTable>
         </TabPanel>
       </SwipeableViews>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        action={
+          <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+            1件売れました
+          </Alert>
+        }
+      />
     </ThemeProvider>
   );
 };
